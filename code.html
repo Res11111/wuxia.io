@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>武俠文字冒險遊戲</title>
+    <link rel="icon" type="image/ico" href="wu.png">
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-image: url('onlybackground.png'); /* 替换 'your-image-path.jpg' 为你的图片路径 */
+        background-size: cover; /* 使背景图像填充整个屏幕 */
+        background-position: center; /* 将背景图像居中 */
+        color: #ccc; /* Light text */
+}
+
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            /* White text for headings */
+        }
+
+        #messageFormContainer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            background-color: transparent;
+            padding: 10px 0;
+        }
+
+        #messageForm {
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+        }
+
+        #messageInput {
+            width: 500px;
+            padding: 10px;
+            border: 1px solid #555;
+            /* Darker borders */
+            background-color: #222;
+            /* Dark input fields */
+            color: #ddd;
+            /* Light text */
+            border-radius: 5px;
+            outline: none;
+        }
+
+        #messageInput:focus {
+            border-color: dodgerblue;
+        }
+
+        #messageInput::placeholder {
+            color: #777;
+            /* Darker placeholder */
+        }
+
+        #messageInput:focus::placeholder {
+            color: transparent;
+        }
+
+        #sendMessageBtn {
+            padding: 10px 20px;
+            background-color: #555;
+            /* Darker button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        #sendMessageBtn:hover {
+            background-color: #777;
+            /* Lighter on hover */
+        }
+
+        #messagesContainer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            width: 800px;
+            height: 400px;
+            overflow-y: auto;
+            background-color: #222;
+            /* Dark background for messages */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            color: #ccc;
+            /* Light text for messages */
+        }
+
+        .userMessage {
+            background-color: #800080;
+            /* Darker user message */
+            text-align: right;
+        }
+
+        .botMessage {
+            background-color: #556B2F;
+            /* Darker bot message */
+            text-align: left;
+        }
+
+        #sceneImageContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #sceneImage {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        #startButton,#introButton {
+        display: block;
+        margin: 0 auto;
+        padding: 15px 30px;
+        font-size: 20px;
+        cursor: pointer;
+        color: white;
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid #fff;
+        border-radius: 5px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        width: 300px;
+        text-align: center; /* Add this line to center the text */
+}
+        
+
+        #startButton:hover {
+            background: rgba(0, 0, 0, 1);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+        }
+        .button {
+            display: inline-block;
+            background-color: rgba(128, 128, 128);; /* 一般狀態的背景顏色 */
+            border: none;
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            margin-top: -50px; /* 向上移动按钮 */
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 12px;
+        }   
+        .button:hover {
+            background-color: #45a049;
+            color: white;}
+
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);}
+    </style>
+</head>
+
+<body>
+    <h1><strong><em>武俠文字冒險遊戲</em></strong></h1>
+    <div id="startButton">遊戲開始</div>
+    <div id="messagesContainer">
+        <div id="sceneImageContainer">
+            <!-- Image will be displayed here -->
+        </div>
+        <div id="messages"></div>
+    </div>
+    <div id="messageFormContainer">
+        <form id="messageForm">
+            <input type="text" id="messageInput" placeholder="Type your message here..." required>
+            <button id="sendMessageBtn" type="submit">送出</button>
+        </form>
+    </div>
+    
+    <button  class="button" onclick="playMusic()">播放音樂</button>
+    
+    <script>
+
+               
+
+        var conversationHistory = [];
+
+        var apiKey = prompt("Please enter your API key:", "");
+
+        if (!apiKey) {
+            alert("API key and name are required to use the chatroom.");
+        } else {
+            document.getElementById('messageForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                var message = document.getElementById('messageInput').value;
+
+                addToConversationHistory('user', message);
+                displayMessage(message, 'user');
+
+                fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + apiKey, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "contents": conversationHistory,
+                        "safetySettings": [
+                            {
+                                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                                "threshold": "BLOCK_ONLY_HIGH"
+                            },
+                            {
+                                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                                "threshold": "BLOCK_ONLY_HIGH"
+                            },
+                        ],
+                        "generationConfig": {
+                            "stopSequences": [
+                                ""
+                            ],
+                            "temperature": 1.0,
+                            "maxOutputTokens": 2048,
+                            "topP": 0.8,
+                            "topK": 10
+                        }
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        var responseText = data.candidates[0].content.parts[0].text;
+                        addToConversationHistory('model', responseText);
+                        displayMessage(responseText, 'bot');
+                    })
+                    .catch(error => console.error('Error:', error));
+
+                document.getElementById('messageInput').value = '';
+            });
+        }
+
+        function addToConversationHistory(role, text) {
+            conversationHistory.push({
+                "role": role,
+                "parts": [{
+                    "text": text
+                }]
+            });
+        }
+
+        function displayMessage(message, sender) {
+            var messageElement = document.createElement('div');
+            var formatMessage = formatText(message);
+            messageElement.innerHTML = formatMessage;
+            messageElement.classList.add('message');
+            if (sender === 'user') {
+                messageElement.classList.add('userMessage');
+            } else {
+                messageElement.classList.add('botMessage');
+            }
+            document.getElementById('messages').appendChild(messageElement);
+            // Scroll to bottom
+            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+            updateSceneImage(message);
+        }
+
+        function updateSceneImage(responseText) {
+            let sceneMatch = responseText.match(/結局：(.*?)\s/); // 使用正則表達式匹配場景描述
+            if (sceneMatch && sceneMatch[1]) {
+                let scene = sceneMatch[1];
+                console.log(scene);
+                // 檢查scene是否包含"宿舍"
+                if (scene.includes("一統江湖")) {
+                    setTimeout(function() {
+                        document.getElementById('sceneImage').innerHTML = '<img src="background picture.png" alt="End" style="width:500px;">';
+                    }, 1000); // 10秒後顯示圖片
+                } else if (scene.includes("聚會")) {
+                    setTimeout(function() {
+                        document.getElementById('sceneImage').innerHTML = '<img src="../img/party.jpeg" alt="Party" style="width:500px;">';
+                    }, 10000); // 10秒後顯示圖片
+                } else if (scene.includes("圖書館")) {
+                    setTimeout(function() {
+                        document.getElementById('sceneImage').innerHTML = '<img src="../img/library.jpeg" alt="Library" style="width:500px;">';
+                    }, 10000); // 10秒後顯示圖片
+                } else {
+                    // 如果不包含特定場景，可以在這裡處理其他情況或者不進行任何操作
+                    // 例如清空圖片或顯示預設圖片
+                    document.getElementById('sceneImage').innerHTML = ''; // 清空圖片
+                }
+            }
+}
+
+
+        function formatText(text) {
+            let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<br><strong>$1</strong>');
+
+            formattedText = formattedText.replace(/\*(.*?)\s/g, '<br>$1');
+
+            return formattedText;
+        }
+
+        document.getElementById('startButton').addEventListener('click', function () {
+            conversationHistory.push({
+                "role": 'user',
+                "parts": [{
+                    "text": `請開始一個武俠文字冒險遊戲。由你來描述遊戲場景,由玩家來決定要
+                    採取的動作，玩家每次有三個選項可以選擇。請詳細描述場景中所有的物品、人物,如果場景中的
+                    人物在對話或跟主角對話,請把對話內容完整輸出來,如果主角和
+                    場景中的任何人物互動,請把互動過程詳細描述出來,不要出現重
+                    複的場景或對話,故事要曲折離奇、高潮迭起。 遊戲開始時,請
+                    詳述故事背景,並提供一個玩家腳色。每次你做完敘述後,
+                    要說明玩家的生命值和魔力值和故事的已選擇次數(就是回答幾次),生命值歸零玩家就死亡,內力值歸
+                    零,就無法使用武功,選擇次數到達10次遊戲會進入結局，結局會描述故事的結局。
+                    以下是你會呈現架構的
+                    {
+                    場景： 
+                    選擇： 
+                    1.  
+                    2. 
+                    3. 
+                    生命值：
+                    內力值：
+                    選擇次數：
+                    }
+                    現在遊戲開始。`
+                }]
+            })
+            fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + apiKey, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "contents": conversationHistory,
+                    "safetySettings": [
+                        {
+                            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                            "threshold": "BLOCK_NONE"
+                        },
+                        {
+                            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                            "threshold": "BLOCK_NONE"
+                        },
+                    ],
+                    "generationConfig": {
+                        "stopSequences": [
+                            ""
+                        ],
+                        "temperature": 1.0,
+                        "maxOutputTokens": 2048,
+                        "topP": 0.8,
+                        "topK": 10
+                    }
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(conversationHistory);
+                    var responseText = data.candidates[0].content.parts[0].text;
+                    addToConversationHistory('model', responseText);
+                    displayMessage(responseText, 'bot');
+                })
+                .catch(error => console.error('Error:', error));
+        });
+        document.getElementById('startButton').addEventListener('click', function () {
+    // 其他代码...
+
+    // 隐藏 startButton 元素
+    document.getElementById('startButton').style.display = 'none';
+});
+
+        function playMusic() {
+            var audio = new Audio('gamebgm.mp3'); // 替换 'your-audio-file.mp3' 为你的音频文件路径
+            audio.loop = true; // 將循環播放設置為 true
+            audio.play();
+        }
+
+        function displayMessage(message, sender) {
+        var messageElement = document.createElement('div');
+        var formatMessage = formatText(message);
+        messageElement.classList.add('message');
+        if (sender === 'user') {
+            messageElement.classList.add('userMessage');
+        } else {
+            messageElement.classList.add('botMessage');
+        }
+        document.getElementById('messages').appendChild(messageElement);
+        updateSceneImage(message);
+        // Function to display the text one character at a time
+        function typeText(element, text, index) {
+            if (index < text.length) {
+                let char = text[index];
+                if (char === '<') {
+                    let endIndex = text.indexOf('>', index);
+                    if (endIndex !== -1) {
+                        element.innerHTML += text.substring(index, endIndex + 1);
+                        index = endIndex + 1;
+                    }
+                } else {
+                    element.innerHTML += char;
+                    index++;
+                }
+                setTimeout(function () {
+                    typeText(element, text, index);
+                }, 30); // Adjust typing speed by changing the delay (in milliseconds)
+            } else {
+                // Scroll to bottom after the entire message is displayed
+                document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+            }
+        }
+
+        // Start typing the formatted message
+        typeText(messageElement, formatMessage, 0);
+    }
+
+    </script>
+</body>
+
+</html>
