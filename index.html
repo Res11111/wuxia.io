@@ -824,10 +824,12 @@
 });
 
         function playMusic() {
-            var audio = new Audio('gamebgm.mp3'); // 替换 'your-audio-file.mp3' 为你的音频文件路径
-            audio.loop = true; // 將循環播放設置為 true
+            var audio = new Audio('gamebgm.mp3'); // 替换 'gamebgm.mp3' 为你的音频文件路径
+            audio.loop = true; // 將循環播放ㄋ設置為 true
+            audio.volume = 0.1; // 设置音量为 50%
             audio.play();
         }
+
 
         function displayMessage(message, sender) {
         var messageElement = document.createElement('div');
