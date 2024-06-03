@@ -8,15 +8,19 @@
     <link rel="icon" type="image/ico" href="wu.png">
     <style>
         body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        background-image: url('onlybackground.png'); /* 替换 'your-image-path.jpg' 为你的图片路径 */
-        background-size: cover; /* 使背景图像填充整个屏幕 */
-        background-position: center; /* 将背景图像居中 */
-        color: #ccc; /* Light text */
-}
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-image: url('onlybackground.png');
+            /* 替换 'your-image-path.jpg' 为你的图片路径 */
+            background-size: cover;
+            /* 使背景图像填充整个屏幕 */
+            background-position: center;
+            /* 将背景图像居中 */
+            color: #ccc;
+            /* Light text */
+        }
 
 
         h1 {
@@ -39,7 +43,7 @@
         #messageForm {
             display: flex;
             justify-content: center;
-            align-items: center; 
+            align-items: center;
         }
 
         #messageInput {
@@ -130,73 +134,85 @@
             border-radius: 5px;
         }
 
-        #startButton,#introButton {
-        display: block;
-        margin: 0 auto;
-        padding: 15px 30px;
-        font-size: 20px;
-        cursor: pointer;
-        color: white;
-        background: rgba(0, 0, 0, 0.8);
-        border: 1px solid #fff;
-        border-radius: 5px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        width: 300px;
-        text-align: center; /* Add this line to center the text */
-}
-        
+        #startButton,
+        #introButton {
+            display: block;
+            margin: 0 auto;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #fff;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+            /* Add this line to center the text */
+        }
+
 
         #startButton:hover {
             background: rgba(0, 0, 0, 1);
             box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
         }
+
         .button {
             display: inline-block;
-            background-color: rgba(128, 128, 128);; /* 一般狀態的背景顏色 */
+            background-color: rgba(128, 128, 128);
+            ;
+            /* 一般狀態的背景顏色 */
             border: none;
             color: white;
             text-align: center;
             font-size: 16px;
-            margin-top: -50px; /* 向上移动按钮 */
+            margin-top: -50px;
+            /* 向上移动按钮 */
             transition-duration: 0.4s;
             cursor: pointer;
             border-radius: 12px;
-        }   
+        }
+
         .button:hover {
             background-color: #45a049;
-            color: white;}
+            color: white;
+        }
 
         .button:active {
             background-color: #3e8e41;
             box-shadow: 0 5px #666;
-            transform: translateY(4px);}
+            transform: translateY(4px);
+        }
 
-            
-            #backgroundWrapper {
+
+        #backgroundWrapper {
             width: 80vw;
             max-width: 400px;
             height: 80vw;
             max-height: 200px;
             background-size: contain;
             background-repeat: no-repeat;
-            position: relative; /* 设置定位方式 */
-            left: 1250px; /* 从左侧偏移20像素 */
-            border-radius: 10px; /* 可选的边框圆角样式 */
+            position: relative;
+            /* 设置定位方式 */
+            left: 1250px;
+            /* 从左侧偏移20像素 */
+            border-radius: 10px;
+            /* 可选的边框圆角样式 */
 
-}
-
-
-
-
-        p{  
-          
-            position: absolute; /* 设置绝对定位 */
-            right: 11%; /* 相对于父元素左侧50%的位置 */
-            top: 40%; /* 相对于父元素顶部50%的位置 */
-}
+        }
 
 
 
+
+        p {
+
+            position: absolute;
+            /* 设置绝对定位 */
+            right: 11%;
+            /* 相对于父元素左侧50%的位置 */
+            top: 40%;
+            /* 相对于父元素顶部50%的位置 */
+        }
     </style>
 </head>
 
@@ -206,7 +222,8 @@
     <div id="messagesContainer">
         <div id="sceneImageContainer">
             <!-- Image will be displayed here -->
-        </div>        <div id="messages"></div>
+        </div>
+        <div id="messages"></div>
     </div>
     <div id="messageFormContainer">
         <form id="messageForm">
@@ -214,95 +231,103 @@
             <button id="sendMessageBtn" type="submit">送出</button>
         </form>
     </div>
-    
-    <button  class="button" onclick="playMusic()">播放音樂</button>
+
+    <button class="button" onclick="playMusic()">播放音樂</button>
     <div id="backgroundWrapper"></div>
     <p><strong>場景圖</strong></p>
 </body>
 
-    <script>
+<script>
 
-               
 
-        var conversationHistory = [];
 
-        var apiKey = prompt("Please enter your API key:", "");
+    var conversationHistory = [];
 
-        if (!apiKey) {
-            alert("API key and name are required to use the chatroom.");
-        } else {
-            document.getElementById('messageForm').addEventListener('submit', function (event) {
-                event.preventDefault();
-                var message = document.getElementById('messageInput').value;
+    var apiKey = prompt("Please enter your API key:", "");
 
-                addToConversationHistory('user', message);
-                displayMessage(message, 'user');
+    if (!apiKey) {
+        alert("API key and name are required to use the chatroom.");
+    } else {
+        document.getElementById('messageForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var message = document.getElementById('messageInput').value;
 
-                fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + apiKey, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "contents": conversationHistory,
-                        "safetySettings": [
-                            {
-                                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                                "threshold": "BLOCK_ONLY_HIGH"
-                            },
-                            {
-                                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                                "threshold": "BLOCK_ONLY_HIGH"
-                            },
+            addToConversationHistory('user', message);
+            displayMessage(message, 'user');
+
+            fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + apiKey, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "contents": conversationHistory,
+                    "safetySettings": [
+                        {
+                            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                            "threshold": "BLOCK_NONE"
+                        },
+                        {
+                            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                            "threshold": "BLOCK_NONE"
+                        },
+                        {
+                            "category": "HARM_CATEGORY_HARASSMENT",
+                            "threshold": "BLOCK_NONE"
+                        },
+                        {
+                            "category": "HARM_CATEGORY_HATE_SPEECH",
+                            "threshold": "BLOCK_NONE"
+                        },
+                    ],
+                    "generationConfig": {
+                        "stopSequences": [
+                            ""
                         ],
-                        "generationConfig": {
-                            "stopSequences": [
-                                ""
-                            ],
-                            "temperature": 0.1,
-                            "maxOutputTokens": 2048,
-                            "topP": 0.8,
-                            "topK": 10
-                        }
-                    })
+                        "temperature": 0.1,
+                        "maxOutputTokens": 2048,
+                        "topP": 0.8,
+                        "topK": 10
+                    }
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        var responseText = data.candidates[0].content.parts[0].text;
-                        addToConversationHistory('model', responseText);
-                        displayMessage(responseText, 'bot');
-                    })
-                    .catch(error => console.error('Error:', error));
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var responseText = data.candidates[0].content.parts[0].text;
+                    addToConversationHistory('model', responseText);
+                    displayMessage(responseText, 'bot');
+                })
+                .catch(error => console.error('Error:', error));
 
-                document.getElementById('messageInput').value = '';
-            });
-        }
+            document.getElementById('messageInput').value = '';
+        });
+    }
 
-        function addToConversationHistory(role, text) {
-            conversationHistory.push({
-                "role": role,
-                "parts": [{
-                    "text": text
-                }]
-            });
-        }
+    function addToConversationHistory(role, text) {
+        conversationHistory.push({
+            "role": role,
+            "parts": [{
+                "text": text
+            }]
+        });
+    }
 
-        function displayMessage(message, sender) {
-            var messageElement = document.createElement('div');
-            var formatMessage = formatText(message);
-            messageElement.innerHTML = formatMessage;
-            messageElement.classList.add('message');
-            if (sender === 'user') {
-                messageElement.classList.add('userMessage');
-            } else {
-                messageElement.classList.add('botMessage');
-            }
-            document.getElementById('messages').appendChild(messageElement);
-            // Scroll to bottom
-            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-            updateSceneImage(message);
+    function displayMessage(message, sender) {
+        var messageElement = document.createElement('div');
+        var formatMessage = formatText(message);
+        messageElement.innerHTML = formatMessage;
+        messageElement.classList.add('message');
+        if (sender === 'user') {
+            messageElement.classList.add('userMessage');
+        } else {
+            messageElement.classList.add('botMessage');
         }
-        function updateSceneImage(responseText) {
+        document.getElementById('messages').appendChild(messageElement);
+        // Scroll to bottom
+        document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+        updateSceneImage(message);
+    }
+    function updateSceneImage(responseText) {
         let sceneMatch = responseText.match(/場景：(.*?)\s/); // 使用正則表達式匹配場景描述
         if (sceneMatch && sceneMatch[1]) {
             let scene = sceneMatch[1];
@@ -320,21 +345,20 @@
     }
 
 
-        function formatText(text) {
-            let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<br><strong>$1</strong>');
+    function formatText(text) {
+        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<br><strong>$1</strong>');
 
-            formattedText = formattedText.replace(/\*(.*?)\s/g, '<br>$1');
+        formattedText = formattedText.replace(/\*(.*?)\s/g, '<br>$1');
 
-            return formattedText;
-        }
+        return formattedText;
+    }
 
-        document.getElementById('startButton').addEventListener('click', function () 
-        {       
+    document.getElementById('startButton').addEventListener('click', function () {
 
-            conversationHistory.push({
-                "role": 'user',
-                "parts": [{
-                                            "text": `
+        conversationHistory.push({
+            "role": 'user',
+            "parts": [{
+                "text": `
 
 場景：初入江湖，你來到一個繁華的市集，四周人來人往，熱鬧非凡。忽然，一位穿著破舊但氣質不凡的老者走近你。
 對話一：老者： 年輕人，你是初入江湖吧？這片江湖可不太平啊。
@@ -777,61 +801,69 @@
 
 
 `
-                }]
-            })
-            fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + apiKey, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "contents": conversationHistory,
-                    "safetySettings": [
-                        {
-                            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                            "threshold": "BLOCK_NONE"
-                        },
-                        {
-                            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                            "threshold": "BLOCK_NONE"
-                        },
+            }]
+        })
+        fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + apiKey, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "contents": conversationHistory,
+                "safetySettings": [
+                    {
+                        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                        "threshold": "BLOCK_NONE"
+                    },
+                    {
+                        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                        "threshold": "BLOCK_NONE"
+                    },
+                    {
+                        "category": "HARM_CATEGORY_HARASSMENT",
+                        "threshold": "BLOCK_NONE"
+                    },
+                    {
+                        "category": "HARM_CATEGORY_HATE_SPEECH",
+                        "threshold": "BLOCK_NONE"
+                    },
+                ],
+                "generationConfig": {
+                    "stopSequences": [
+                        ""
                     ],
-                    "generationConfig": {
-                        "stopSequences": [
-                            ""
-                        ],
-                        "temperature": 0.1,
-                        "maxOutputTokens": 2048,
-                        "topP": 0.8,
-                        "topK": 10
-                    }
-                })
+                    "temperature": 0.1,
+                    "maxOutputTokens": 2048,
+                    "topP": 0.8,
+                    "topK": 10
+                }
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(conversationHistory);
-                    var responseText = data.candidates[0].content.parts[0].text;
-                    addToConversationHistory('model', responseText);
-                    displayMessage(responseText, 'bot');
-                })
-                .catch(error => console.error('Error:', error));
-        });
-        document.getElementById('startButton').addEventListener('click', function () {
-    // 其他代码...
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(conversationHistory);
+                var responseText = data.candidates[0].content.parts[0].text;
+                addToConversationHistory('model', responseText);
+                displayMessage(responseText, 'bot');
+            })
+            .catch(error => console.error('Error:', error));
+    });
+    document.getElementById('startButton').addEventListener('click', function () {
+        // 其他代码...
 
-    // 隐藏 startButton 元素
-    document.getElementById('startButton').style.display = 'none';
-});
+        // 隐藏 startButton 元素
+        document.getElementById('startButton').style.display = 'none';
+    });
 
-        function playMusic() {
-            var audio = new Audio('gamebgm.mp3'); // 替换 'gamebgm.mp3' 为你的音频文件路径
-            audio.loop = true; // 將循環播放ㄋ設置為 true
-            audio.volume = 0.1; // 设置音量为 50%
-            audio.play();
-        }
+    function playMusic() {
+        var audio = new Audio('gamebgm.mp3'); // 替换 'gamebgm.mp3' 为你的音频文件路径
+        audio.loop = true; // 將循環播放ㄋ設置為 true
+        audio.volume = 0.1; // 设置音量为 50%
+        audio.play();
+    }
 
 
-        function displayMessage(message, sender) {
+    function displayMessage(message, sender) {
         var messageElement = document.createElement('div');
         var formatMessage = formatText(message);
         messageElement.classList.add('message');
@@ -869,7 +901,7 @@
         typeText(messageElement, formatMessage, 0);
     }
 
-    </script>
+</script>
 </body>
 
 </html>
