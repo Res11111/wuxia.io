@@ -22,7 +22,6 @@
             /* Light text */
         }
 
-
         h1 {
             text-align: center;
             color: #fff;
@@ -151,7 +150,6 @@
             /* Add this line to center the text */
         }
 
-
         #startButton:hover {
             background: rgba(0, 0, 0, 1);
             box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
@@ -160,7 +158,6 @@
         .button {
             display: inline-block;
             background-color: rgba(128, 128, 128);
-            ;
             /* 一般狀態的背景顏色 */
             border: none;
             color: white;
@@ -184,6 +181,9 @@
             transform: translateY(4px);
         }
 
+        #parentElement {
+            position: relative;
+        }
 
         #backgroundWrapper {
             width: 80vw;
@@ -192,26 +192,23 @@
             max-height: 200px;
             background-size: contain;
             background-repeat: no-repeat;
-            position: relative;
+            position: absolute;
             /* 设置定位方式 */
-            left: 1250px;
-            /* 从左侧偏移20像素 */
+            right: -7%;
+            /* 从右侧偏移0像素 */
+            top: 13%;
+            /* 从顶部偏移13% */
             border-radius: 10px;
             /* 可选的边框圆角样式 */
-
         }
 
-
-
-
         p {
-
             position: absolute;
             /* 设置绝对定位 */
             right: 11%;
-            /* 相对于父元素左侧50%的位置 */
+            /* 相对于父元素左侧11%的位置 */
             top: 40%;
-            /* 相对于父元素顶部50%的位置 */
+            /* 相对于父元素顶部40%的位置 */
         }
     </style>
 </head>
@@ -578,7 +575,7 @@
 武力值 +0
 生命值 +5
 內力值 +5
-（掌門點頭，好好努力，導向場景：初試身手）(導向對話十)
+（掌門點頭，好好努力，導向場景：初試身手）(導向對話十) 
 選項二： 我會為門派貢獻我的力量。
 如果選擇選項二才顯示下列：
 武力值 +5
